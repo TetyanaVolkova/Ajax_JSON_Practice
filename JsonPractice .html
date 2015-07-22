@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.js"></script>
+<style>
+	body {
+		margin: 20px;
+	}
+	table, th, td {
+		border: 1px solid black;
+	}
+	#table {
+		margin-top: 20px;
+	}
+	.tableHead {
+		text-align: center;
+		width: 1000px;
+	}
+	td {
+		text-align: center;
+	}
+	#userId {
+		display: block;
+	}
+	#usersButton {
+		margin-top: 20px;
+	}
+	h1, h2 {
+		text-align: center;
+	}
+	#jsonLink {
+		margin-top: 20px;
+	}
+</style>
+</head>
+<body>
+<script tipe="text/javascript" src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+<hgroup>
+	<h1>Get JSON data from Server</h1>
+	<h2>Practice</h2>
+</hgroup>
+
+<form></form>
+	<label id="userId">Enter User Id: </label>
+	<input type = "text" id="input1" name="user_id" required />
+	<input type = "submit" id="btn" data-bind="click: addToList" value = "Get User" />
+	<div id="usersButton">
+	<button type = "button" data-bind="click: addAllToList">Get All Users</button>
+	</div>
+</form>
+
+<table id="table">
+	<thead>
+		<tr>
+			<th class = "tableHead">Id</th>
+			<th class = "tableHead">Name</th>
+			<th class = "tableHead">Username</th>
+			<th class = "tableHead">Email</th>
+			<th class = "tableHead">Address</th>
+		</tr>
+	</thead>
+	<tbody id= "pushData" data-bind="foreach: data">
+		<tr>
+			<td data-bind="text: id"></td>
+			<td data-bind="text: name"></td>
+			<td data-bind="text: username"></td>
+			<td data-bind="text: email"></td>
+			<td data-bind="text: address.city"></td>
+		</tr>
+	</tbody>
+</table>
+<div id="jsonLink">
+	<a href="http://jsonplaceholder.typicode.com/users">Visit this link for Fake Online REST API for Testing and Prototyping</a>
+</div>
+
+<script>
+
+			function ViewModel() {
+				var self = this;
+				self.data = ko.observableArray();
+
+				self.addToList = function() {
+					$.ajax({
+						url: "http://jsonplaceholder.typicode.com/users",
+						data: {id: $("#input1").val()},
+						method: "GET",
+						dataType: "JSON",
+						success: function(d) {
+							self.data(d);
+						}
+						
+					});
+
+					$("#input1").val("");
+				}
+					self.addAllToList = function() {
+					$.ajax({
+						url: "http://jsonplaceholder.typicode.com/users",
+						//data: {id: $("#input1").val()},
+						method: "GET",
+						dataType: "JSON",
+						success: function(d) {
+							self.data(d);
+						}
+						
+					});
+				}
+			}
+			
+			ko.applyBindings(new ViewModel());
+
+
+</script>
+</body>
+</html>
